@@ -1,13 +1,6 @@
 '''
-Devloper: Hendo
+Developer: Hendo
           leorsousa
-
-Owner: ShadowKnight
-
-
-Protected by license BSD 3-License Clause
-Any unauthorized acess will be traced down
-and punished legaly
 
 '''
 
