@@ -1,36 +1,45 @@
-try:
-    import telebot
-    from webdriver_manager.chrome import ChromeDriverManager
-    from selenium import webdriver
-    from selenium import webdriver
-    import time
-    import re
-    from bs4 import BeautifulSoup
-    from webdriver_manager.chrome import ChromeDriverManager
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    import time
-except ImportError:
-    import os
-    os.system('pip install -r requirements.txt')
-import os
+'''
+Devloper: Hendo
+          leorsousa
 
-from more_itertools import first
-from traitlets import link
+Owner: ShadowKnight
+
+
+Protected by license BSD 3-License Clause
+Any unauthorized acess will be traced down
+and punished legaly
+
+'''
+
+
+
+import os
+import telebot
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
+from selenium import webdriver
+import time
+from bs4 import BeautifulSoup
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+
 
 def open_url(link):
+    
     path = ChromeDriverManager().install()
     opt = webdriver.ChromeOptions()
     opt.add_argument("--headless")
     nav = webdriver.Chrome(executable_path=path, options=opt)
     nav.get(link)
 
-    email, password = "shadowknight9921@hotmail.com", "11225544def"
+    email, password = "shadowknight9921@hotmail.com", "fewinf9034@dw098$D"
     
 
     first_step = nav.find_element_by_css_selector('.btn')
-    time.sleep(1)
+    time.sleep(2)
     first_step.click()
 
     time.sleep(3)
@@ -48,18 +57,18 @@ def open_url(link):
     try:
         try:
             click_again = nav.find_element_by_css_selector('#tab-2signin')
-            time.sleep(1)
+            time.sleep(2)
             click_again.click()
 
         except Exception as e:
             print(f"erro: {e}")
             click_again = nav.find_element_by_css_selector('.btn.btn-login.menu-login-acct')
-            time.sleep(1)
+            time.sleep(2)
             click_again.click()
 
     except:
         click_again = nav.find_element_by_css_selector('#main-signin-btn')
-        time.sleep(1)
+        time.sleep(2)
         click_again.click()
 
     time.sleep(2)
@@ -69,31 +78,36 @@ def open_url(link):
     mail_form.send_keys(email)
 
     password_form = nav.find_element_by_css_selector("#signin-form_password")
-    time.sleep(.5)
+    time.sleep(1)
     password_form.send_keys(password)
 
-    time.sleep(.5)
-    WebDriverWait(nav, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn.login-submit"))).click()
     time.sleep(1)
-    soup = BeautifulSoup(nav.page_source, 'html5lib')
+    WebDriverWait(nav, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".btn.login-submit"))).click()
+    time.sleep(2)
+    soup = BeautifulSoup(nav.page_source, element_classes=[])
 
     nav.get(link)
-    soup = BeautifulSoup(nav.page_source, 'html5lib')
-
     time.sleep(4)
+    soup = soup.prettify().split('\n')
+    
+    ls = []
+    for i in soup:
+        if "html5player.setVideoUrl" in i:
+            ls.append(i)
+    ls = [ls[i].split('"') for i in range(len(ls))]
+    print(ls)
+    ls = str(ls[-1])
+    ls = ls.replace("\\t", "")
+    ls = ls.replace("[", "")
+    ls = ls.replace("]", "")
+    ls = ls.replace("'", "")
+    ls = ls.replace(" ", "")
+    ls = ls.replace("html5player.setVideoUrlHigh", "")
+    ls = ls.replace("(", "")
+    ls = ls.replace(")", "")
+    ls = ls.replace(";", "")
+    return ls
 
-    texto = soup.text
-
-    html = texto.split("html5player.setVideoUrlHigh('")
-    for i in range(len(html)):
-        if i > 0:
-            html = html[i].split("');")[0]
-
-    link_2 = html[0]
-
-    print(link)
-
-    return link_2
 
 
 bot = telebot.TeleBot("5301712423:AAFickOb9minMx4j4ty9SEr0KP8j9C8VzF0")
@@ -109,11 +123,21 @@ def generic_url(message):
     hour = time.time()-3600
     link = message.text
 
-    bot.send_message(message.chat.id, "Acessando o link...")
-    link_2 = open_url(link)
-    site_url = "assistirxvideosepornhubgratis.xyz/?url=" + link_2
-    generic_url = f"https://shrtfly.com/st?api=752c5cdfec332eb03ca68179a0a0788f71711af1&url={site_url}&alias=CustomAlias&expire={hour}"
-    bot.send_message(message.chat.id, generic_url)
-    return link_2
+    bot.send_message(message.chat.id, "Gerando o link...")
+    bot.send_message(message.chat.id, "Por favor aguarde um segundo...")
+    link_2 = str(open_url(link)).replace('"', "")
+    print(link_2)
+    url_1 = link_2[len(link_2)//2:]
+    url_2 = link_2[:len(link_2)//2]
+    if url_2 + url_1 == link_2:
+
+        site_url = "assistirxvideosepornhubgratis.xyz/?url=" + link_2
+        generic_url = f"shrtfly.com/st?api=e10e67900386537c825ed6e4a5f1eba75d56bb79&url={site_url}"
+        print(generic_url)
+        bot.send_message(message.chat.id, generic_url)
+        return link_2
+    else:
+        bot.send_message(message.chat.id, "Link inválido")
+        return False
 
 bot.polling()
