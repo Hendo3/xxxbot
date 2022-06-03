@@ -103,7 +103,7 @@ def open_url(link):
 
 
 
-bot = telebot.TeleBot("5301712423:AAFickOb9minMx4j4ty9SEr0KP8j9C8VzF0")
+bot = telebot.TeleBot("5526075354:AAFL56BsHP2qy4FxfCbITXgPqO-yYy-oCzY")
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
