@@ -107,9 +107,7 @@ bot = telebot.TeleBot("5526075354:AAFL56BsHP2qy4FxfCbITXgPqO-yYy-oCzY")
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, "Versão 1.0.0")
-    bot.reply_to(message, "Digite o link do video que deseja acessar")
-    bot.send_message(message.chat.id, "Devido ao bot estar em beta, pedimos que use o navegador Chrome")
+   bot.reply_to(message, "Digite o link do video que deseja acessar")
 
 @bot.message_handler(content_types=['text'])
 def generic_url(message):
@@ -128,6 +126,7 @@ def generic_url(message):
         generic_url = f"shrtfly.com/st?api=e10e67900386537c825ed6e4a5f1eba75d56bb79&url={site_url}"
         print(generic_url)
         bot.send_message(message.chat.id, generic_url)
+        bot.send_message(message.chat.id, "Por favor copie o link e cole no navegador para poder acessar o conteúdo/nDigite /start para pedir outro vídeo") 
         return link_2
     else:
         bot.send_message(message.chat.id, "Link inválido")
